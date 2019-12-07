@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Share-out</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+        .mw {
+            max-width: 540px;
+        }
+
+    </style>
+</head>
+
+<body grey lighten-5>
+    <header id="header">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light ">
+            <a class="navbar-brand " href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link " href="vva.html">Все заявки <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="#">Мой профиль</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="#">Pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary text-white" href="#">Хочу в аренду</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main id="main">
+        <img src="img/galgreen2.jpg" class="img-fluid" alt="Responsive image">
+    </main>
+    
+    <footer class="page-footer footer-fixed  blue darken-3  ">
+
+    </footer>
+
+</body>
+
+<script type="text/javascript" src=" https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function() {
+        $('#myModal').on('shown.bs.modal', function() {
+            $('#myInput').trigger('focus')
+        })
+        $.ajax({
+            url: 'http://127.0.0.1:8000/test',
+            success: function(data) {
+                console.log(data);
+                var div_n = document.createElement('div');
+                document.getElementById("main").appendChild(div_n);
+                div_n.className = "row";
+                div_n.innerHTML = "<h5>Ваше имя: " + data[0]["name"] + "</h5>" + "<br>" + "<h5>Ваш телефон: " + data[0]["phone"] + "</h5>";
+            },
+            data: {
+                id: localStorage.user_id
+            }
+
+        })
+        
+
+
+    });
+     
+</script>
+
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Share-out</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+        .mw {
+            max-width: 540px;
+            margin-top: 5vw;
+        }
+
+        .text-p {
+            white-space: nowrap;
+            /* Запрещаем перенос строк */
+            overflow: hidden;
+            /* Цвет фона */
+            max-width: 68vw;
+            /* Поля вокруг текста */
+            text-overflow: ellipsis;
+        }
+
+        .mh {
+            height: 20vw;
+        }
+
+    </style>
+</head>
+
+<body grey lighten-5>
+    <header id="header">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <img src="img/str-logo.png" width="175" height="70" alt="">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="my-annotations.html">Мои заявки<span class="sr-only">(current)</span></a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="my-profile2.html">Мой профиль</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-primary text-white" href="annotation-form.html" id="sdat" value="1">Хочу в аренду</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    </header>
+
+    <main id="main">
+        <div class="container" id="cont" style="">
+
+        </div>
+
+
+        <div class="collapsible-body" id="colap_div"><span id="act_sp">Объявлений нет</span></div>
+
+    </main>
+
+    <footer class="page-footer footer-fixed  blue darken-3  ">
+
+    </footer>
+
+</body>
+
+<script type="text/javascript" src=" https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: 'http://127.0.0.1:8000/test',
+            success: function(data) {
+                document.getElementById("act_sp").innerHTML = " ";
+                console.log(data);
+                var div_n = document.createElement('div');
+                document.getElementById("main").appendChild(div_n);
+                div_n.className = "row left";
+
+            },
+            data: {
+                id: localStorage.user_id
+            }
+
+        })
+
+
+        $.ajax({
+            url: 'http://127.0.0.1:8000/post',
+            success: function(data) {
+
+                for (var i = 0; i < data.length; i++) {
+
+                    var div_r = document.createElement('div');
+                    document.getElementById("cont").appendChild(div_r);
+                    div_r.className = "card mb-3 mw";
+
+                    var div_col = document.createElement('div');
+                    div_r.appendChild(div_col);
+                    div_col.className = "row no-gutters ";
+
+                    var div_co = document.createElement('div');
+                    div_col.appendChild(div_co);
+                    div_co.className = "card-body text-p";
+
+                    div_co.innerHTML = "<h5 class=" + "card-title" + ">" + data[i]["title"] + "</h5>" + "<p class=" + "card-text " + ">" + data[i]["description"] + "</p>"+ "<p class=" + "card-text " + ">"+ "<small>"  + "Категория: "+data[i]["category"] + "</small>" +"</p>" + "<p class=" + "card-text" + ">" + "<small>" + data[i]["price"] + " рублей "+ data[i].price_time + "</small>" + "</p>";
+
+                    var btn = document.createElement("button");
+                    div_co.appendChild(btn);
+                    btn.advert_id = data[i].id
+                    btn.className = "btn btn-primary";
+                    btn.innerHTML = "Принять"
+                    btn.onclick = function() {
+                        console.log(this.advert_id)
+                        if(localStorage!=0){
+                            $.ajax({
+                            url: "http://127.0.0.1:8000/donePost",
+                            success: function() {
+                                window.location = "product.html";
+                                
+                                localStorage.setItem("post_id", data[i].id);
+                                
+                            },
+                            data: {
+                                post_id: this.advert_id,
+                                user_id: localStorage.user_id
+                            }
+                            
+
+                        })
+                        }
+                        else{
+                            window.location="registration.html"
+                        }
+                        
+                    }
+                }
+                console.log(data);
+
+            },
+            data: {
+                user_id: localStorage.user_id,
+            }
+
+        })
+
+
+
+    });
+
+</script>
+
+</html>

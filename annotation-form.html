@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <title>Share-Out</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <img src="img/str-logo.png" width="175" height="70" alt="">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="my-annotations.html">Мои заявки<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="annotation-form.html">Подать объявление</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="my-profile.html">Мой профиль</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-primary text-white" href="vva.html" id="sdat" value="1">Сдать в аренду</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <form class="container" style="margin-top: 5vw; margin-bottom: 5vw;" action="confirm.html">
+        <div class="form-group">
+            <label for="title">Товар</label>
+            <input type="text" class="form-control" id="title" placeholder="Введите название товара">
+        </div>
+
+        <div class="form-group">
+            <label for="category">Категория товара</label>
+            <select class="form-control" id="category">
+                <option value="0">Выберите категорию...</option>
+                <option value="Одежда">Одежда</option>
+                <option value="Электроника">Электроника</option>
+                <option value="Инструменты">Инструменты</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Описание товара</label>
+            <textarea class="form-control" id="description" rows="5" placeholder="Опишите желаемый товар"></textarea>
+        </div>
+
+        <label for="price">Желаемая стоимость аренды</label>
+        <div class="form-row">
+            <div class="col">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="price" placeholder="Аренда" aria-describedby="rub-addon">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="rub-addon">₽</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <select class="form-control" id="price-time">
+                    <option value=" за час">за час</option>
+                    <option value=" за день">за день</option>
+                    <option value=" за неделю">за неделю</option>
+                    <option value=" за месяц">за месяц</option>
+                    <option value=" за год">за год</option>
+                </select>
+            </div>
+        </div>
+
+        <label style="margin-top: 5vw;" for="time-1">Время, когда Вам можно звонить</label>
+        <div style="margin-bottom: 5vw;" class="form-row">
+            <div class="col">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="rub-addon">С</span>
+                    </div>
+                    <input type="time" class="form-control" id="time-1">
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="rub-addon">До</span>
+                    </div>
+                    <input type="time" class="form-control" id="time-2">
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="podat" >Подать заявку</button>
+    </form>
+
+</body>
+
+<script type="text/javascript" src=" https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
+    $("#podat").on('click', function() {
+        if (localStorage != 0) {
+            if ($("#category").val() == 0 || $("#category").val() == " " || $("#description").val() == "" || $("#description").val() == " " || $("#price").val() == "" || $("#price").val() == " " || $("#time-1").val() == "" || $("#time-1").val() == " " || $("#time-2").val() == "" || $("#time-2").val() == " " || $("#title").val() == "" || $("#title").val() == " ") {
+                alert("Не все заполнил!")
+            } else {
+                $.ajax({
+                    url: 'http://127.0.0.1:8000/createPost',
+                    success: function(data) {
+                        console.log(data);
+                        window.location = "confirm.html";
+                    },
+                    data: {
+                        description: $("#description").val(),
+                        category: $("#category").val(),
+                        price: $("#price").val(),
+                        title: $("#title").val(),
+                        time1: String($("#time-1").val()),
+                        time2: String($("#time-1").val()),
+                        price_time: $("#price-time").val(),
+                        userId: localStorage.user_id,
+                    }
+                })
+            }
+        } else {
+            window.location.href = 'registration.html';
+        }
+
+    })
+    $("#sdat").on('click', function() {
+        $.ajax({
+            url: 'http://127.0.0.1:8000/getRole',
+            success: function(data) {
+                console.log(data);
+                localStorage.setItem("role", data)
+                window.location = "vva.html";
+            },
+            data: {
+                role: $("#sdat").val(),
+                userId: localStorage.user_id,
+            }
+        })
+    })
+
+</script>
+
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <title>Share-Out</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <img src="img/str-logo.png" width="175" height="70" alt="">
+        </a>
+    </nav>
+
+    <form class="container" style="margin-top: 5vw; margin-bottom: 5vw;">
+        <div class="form-row">
+            <div class="form-group col">
+                <label for="title">Имя</label>
+                <input type="text" class="form-control" id="name" placeholder="Введите имя" pattern="^[А-Яа-яЁё\s]+$">
+            </div>
+            <div class="form-group col">
+                <label for="title">Фамилия</label>
+                <input type="text" class="form-control" id="surname" placeholder="Введите фамилию" pattern="^[А-Яа-яЁё\s]+$">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="email" class="form-control" id="email" placeholder="Введите свой e-mail" aria-describedby="email-addon">
+        </div>
+
+        <div class="form-group">
+            <label for="tel">Номер телефона</label>
+            <input type="tel" class="form-control" id="tel" placeholder="xxx-xxx-xxxx" aria-describedby="email-addon" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col">
+                <label for="title">Пароль</label>
+                <input type="password" class="form-control" id="pass1" placeholder="Введите пароль">
+            </div>
+            <div class="form-group col">
+                <label for="title">Подтверждение</label>
+                <input type="password" class="form-control" id="pass2" placeholder="Введите еще раз">
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="reg">Зарегистрироваться</button>
+        <a class="btn btn-primary" href="inSign.html" style="margin-left: 4vw">Уже есть аккаунт</a>
+    </form>
+
+</body>
+
+<script type="text/javascript" src=" https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function() {
+        if (localStorage.hasOwnProperty("user_id")) {
+            $.ajax({
+                url: 'http://127.0.0.1:8000/test',
+                success: function(data) {
+                    console.log(data);
+                    if (localStorage != 0) {
+
+                        window.location = "index.html";
+                    }
+                },
+                data: {
+                    user_id: localStorage.user_id,
+                }
+
+            });
+        } else {
+            $("#reg").on('click', function() {
+                if ($("#name").val() == "" || $("#name").val() == " " || $("#email").val() == "" || $("#email").val() == " " || $("#pass1").val() == "" || $("#pass1").val() == " " || $("#tel").val() == "" || $("#tel").val() == " ") {
+                    alert("Не все заполнил!");
+                } else {
+                    //$("#reg").hide();
+                    $.ajax({
+                        url: 'http://127.0.0.1:8000/registr',
+                        success: function(data) {
+                            console.log(data);
+                            localStorage.setItem("user_id", data);
+                            location.replace="annotaion-form.html"
+
+                        },
+                        data: {
+                            login: $("#name").val(),
+                            surname: $("#surname").val(),
+                            password: $("#password").val(),
+                            email: $("#email").val(),
+                            phone: $("#tel").val(),
+                        }
+                    });
+                }
+
+
+            })
+        }
+    })
+
+</script>
+
+</html>
